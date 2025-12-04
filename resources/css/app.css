@@ -1,3 +1,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    /* Brand (vibrant green) */
+    --color-brand-50: #ecfdf5;
+    --color-brand-100: #d1fae5;
+    --color-brand-200: #a7f3d0;
+    --color-brand-500: #10b981;
+    --color-brand-600: #059669;
+
+    /* Neutral / Almost Black to Light Gray */
+    --color-neutral-50: #f9fafb;
+    --color-neutral-100: #f3f4f6;
+    --color-neutral-200: #e5e7eb;
+    --color-neutral-500: #6b7280;
+    --color-neutral-700: #1e293b;
+    --color-neutral-800: #0f172a;
+    --color-neutral-900: #020617;
+
+    --color-bg: var(--color-neutral-800);
+    --color-text: #e2e8f0;
+}
+
+/* Base replacements for dark theme with green accents */
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+}
+
+/* Simple utility classes for brand buttons, badges, and dark backgrounds */
+@layer components {
+    .btn-brand {
+        @apply inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-brand-600 text-white hover:bg-brand-500;
+    }
+
+    .badge-brand {
+        @apply py-0.5 px-1.5 rounded-full text-xs font-medium bg-brand-50 border border-brand-200 text-brand-600;
+    }
+
+    .bg-dark {
+        @apply bg-neutral-800;
+    }
+
+    .text-light {
+        @apply text-slate-100;
+    }
+}

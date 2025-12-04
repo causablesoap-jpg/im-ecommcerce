@@ -58,9 +58,9 @@
                 wire:key='{{ $order->id }}'
                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{{$order->id}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{$order->created_at->format('d-m-Y')}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{!! $status !!}}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"{{  }}}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                  {{!! $payment_status !!}}
+                 {{  }}}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{Number::currency($order->grand_total,'INR')}}/td>
                 <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">

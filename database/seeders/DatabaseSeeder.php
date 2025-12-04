@@ -4,6 +4,11 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Brand;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +17,55 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        // Create an admin user if it doesn't already exist.
+        User::firstOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('AdminPass123!'),
+            ]
+        );
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Create categories if they don't exist
+        $categories = [
+            ['name' => 'Processors'],
+            ['name' => 'Graphics Cards'],
+            ['name' => 'Memory & Storage'],
+            ['name' => 'Motherboards'],
+            ['name' => 'Power Supplies'],
+            ['name' => 'Cooling'],
+            ['name' => 'Cases'],
+            ['name' => 'Peripherals'],
+        ];
+
+        foreach ($categories as $category) {
+            Category::firstOrCreate(
+                ['name' => $category['name']],
+                [
+                    'slug' => Str::slug($category['name']),
+                ]
+            );
+        }
+
+        // Create brands if they don't exist
+        $brands = [
+            ['name' => 'Intel'],
+            ['name' => 'AMD'],
+            ['name' => 'NVIDIA'],
+            ['name' => 'ASUS'],
+            ['name' => 'Corsair'],
+            ['name' => 'Kingston'],
+            ['name' => 'Samsung'],
+            ['name' => 'MSI'],
+        ];
+
+        foreach ($brands as $brand) {
+            Brand::firstOrCreate(
+                ['name' => $brand['name']],
+                [
+                    'slug' => Str::slug($brand['name']),
+                ]
+            );
+        }
     }
 }

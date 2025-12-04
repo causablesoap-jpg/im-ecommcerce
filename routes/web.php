@@ -15,6 +15,8 @@ use App\Livewire\ProductsPage;
 use App\Livewire\CategoriesPage;
 use App\Livewire\HomePage;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,5 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', function () {
         auth()->logout();
         return redirect('/');
+    });
+    // Admin dashboard (protected)
+    Route::get('/admin', [AdminController::class, 'index'])->middleware('is_admin')->name('admin.dashboard');
+
+    // Admin product CRUD
+    Route::middleware('is_admin')->group(function () {
+        Route::resource('admin/products', AdminProductController::class)->names('admin.products');
     });
 });
