@@ -19,7 +19,10 @@ class AdminProductController extends Controller
             $products->where('name', 'like', "%{$q}%");
         }
 
-        $products = $products->paginate(15)->withQueryString();
+        $products = $products->paginate(15);
+        if ($q) {
+            $products->appends(['q' => $q]);
+        }
 
         return view('admin.products.index', compact('products', 'q'));
     }
@@ -60,6 +63,12 @@ class AdminProductController extends Controller
         $product->save();
 
         return redirect('/admin')->with('success', 'Product created successfully!');
+    }
+
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('admin.products.show', compact('product'));
     }
 
     public function edit($id)

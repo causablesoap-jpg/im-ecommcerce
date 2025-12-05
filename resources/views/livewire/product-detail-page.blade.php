@@ -3,19 +3,28 @@
     <div class="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
 
       <div class="flex flex-wrap -mx-4">
-        <div class="w-full mb-8 md:w-1/2 md:mb-0" x-data="{ mainImage: '{{ url('storage', $product->images[0]) }}' }">
+        @php
+          $mainImage = asset('images/placeholder.png');
+          if (!empty($product->images) && is_array($product->images) && isset($product->images[0])) {
+            $mainImage = url('storage', $product->images[0]);
+          }
+        @endphp
+
+        <div class="w-full mb-8 md:w-1/2 md:mb-0" x-data="{ mainImage: '{{ $mainImage }}' }">
           <div class="sticky top-0 z-50 overflow-hidden ">
             <div class="relative mb-6 lg:mb-10 lg:h-2/4 ">
               <img x-bind:src="mainImage" alt="" class="object-cover w-full lg:h-full ">
             </div>
             <div class="flex-wrap hidden md:flex ">
 
-              @foreach($product->images as $image)
-                <div class="w-1/2 p-2 sm:w-1/4" x-on:click="mainImage='{{ url('storage', $image) }}'">
-                  <img src="{{ url('storage', $image) }}" alt="{{ $product->name }}"
-                    class="object-cover w-full lg:h-20 cursor-pointer hover:border hover:border-brand-500">
-                </div>
-              @endforeach
+              @if(!empty($product->images) && is_array($product->images))
+                @foreach($product->images as $image)
+                  <div class="w-1/2 p-2 sm:w-1/4" x-on:click="mainImage='{{ url('storage', $image) }}'">
+                    <img src="{{ url('storage', $image) }}" alt="{{ $product->name }}"
+                      class="object-cover w-full lg:h-20 cursor-pointer hover:border hover:border-brand-500">
+                  </div>
+                @endforeach
+              @endif
 
 
             </div>
@@ -46,7 +55,7 @@
                   class="text-base font-normal text-neutral-500 line-through dark:text-neutral-400">$1800.99</span>--}}
               </p>
               <p class="max-w-md text-neutral-300">
-                {!! Str::markdown($product->description) !!}
+                {!! Str::markdown($product->description ?? '') !!}
             </div>
             <div class="w-32 mb-8 ">
               <label for=""

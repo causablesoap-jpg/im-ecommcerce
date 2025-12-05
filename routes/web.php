@@ -17,6 +17,7 @@ use App\Livewire\HomePage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminProductController;
+use App\Http\Controllers\AdminCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,5 +54,52 @@ Route::middleware('auth')->group(function () {
     // Admin product CRUD
     Route::middleware('is_admin')->group(function () {
         Route::resource('admin/products', AdminProductController::class)->names('admin.products');
+        Route::resource('admin/categories', AdminCategoryController::class)->names('admin.categories');
+        Route::resource('admin/brands', App\Http\Controllers\AdminBrandController::class)->names('admin.brands');
+        // Filament compatibility: some Filament actions expect named routes like
+        // 'filament.admin.resources.categories.index'. Provide a redirect route
+        // so those calls don't throw a RouteNotFoundException.
+        Route::get('/admin/filament/categories-compat', function () {
+            return redirect()->route('admin.categories.index');
+        })->name('filament.admin.resources.categories.index');
+        // Additional compatibility routes so Filament-generated route names
+        // resolve to the existing admin controllers. These do not replace
+        // Filament's internal routes but provide named aliases that redirect
+        // to your admin controllers.
+        Route::get('/admin/filament/categories/create-compat', function () {
+            return redirect()->route('admin.categories.create');
+        })->name('filament.admin.resources.categories.create');
+
+        Route::get('/admin/filament/categories/{record}-compat', function ($record) {
+            return redirect()->route('admin.categories.show', $record);
+        })->name('filament.admin.resources.categories.view');
+        Route::get('/admin/filament/brands-compat', function () {
+            return redirect()->route('admin.brands.index');
+        })->name('filament.admin.resources.brands.index');
+
+        Route::get('/admin/filament/brands/create-compat', function () {
+            return redirect()->route('admin.brands.create');
+        })->name('filament.admin.resources.brands.create');
+
+        Route::get('/admin/filament/brands/{record}-compat', function ($record) {
+            return redirect()->route('admin.brands.show', $record);
+        })->name('filament.admin.resources.brands.view');
+
+        // Filament products compatibility routes
+        Route::get('/admin/filament/products-compat', function () {
+            return redirect()->route('admin.products.index');
+        })->name('filament.admin.resources.products.index');
+
+        Route::get('/admin/filament/products/create-compat', function () {
+            return redirect()->route('admin.products.create');
+        })->name('filament.admin.resources.products.create');
+
+        Route::get('/admin/filament/products/{record}-compat', function ($record) {
+            return redirect()->route('admin.products.show', $record);
+        })->name('filament.admin.resources.products.view');
+
+        Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('admin.inventory');
+        Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+        Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
     });
 });

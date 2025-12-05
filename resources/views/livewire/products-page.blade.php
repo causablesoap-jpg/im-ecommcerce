@@ -85,23 +85,21 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             @forelse($products as $product)
               <div wire:key="{{ $product->id }}" class="group">
-                <div class="bg-neutral-800 border border-neutral-700 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all transform group-hover:-translate-y-1 h-full flex flex-col">
+                <div role="link" tabindex="0" aria-label="View {{ $product->name }}" onclick="window.location.href='/products/{{ $product->slug }}'" onkeydown="if(event.key==='Enter' || event.key===' ') { window.location.href='/products/{{ $product->slug }}' }" class="bg-neutral-800 border border-neutral-700 rounded-lg overflow-hidden shadow-sm hover:shadow-lg transition-all transform group-hover:-translate-y-1 h-full flex flex-col">
                   <!-- Product Image -->
-                  <a href="/products/{{ $product->slug }}" class="block overflow-hidden">
-                    <div class="relative bg-neutral-900 h-56 flex items-center justify-center overflow-hidden">
-                      @if(!empty($product->images) && is_array($product->images) && isset($product->images[0]))
-                        <img src="{{ url('storage', $product->images[0]) }}" 
-                             alt="{{ $product->name }}"
-                             class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300">
-                      @else
-                        <div class="w-full h-full bg-gradient-to-br from-neutral-700 to-neutral-800 flex items-center justify-center">
-                          <svg class="w-12 h-12 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                          </svg>
-                        </div>
-                      @endif
-                    </div>
-                  </a>
+                  <div class="relative bg-neutral-900 h-56 flex items-center justify-center overflow-hidden">
+                    @if(!empty($product->images) && is_array($product->images) && isset($product->images[0]))
+                      <img src="{{ url('storage', $product->images[0]) }}" 
+                           alt="{{ $product->name }}"
+                           class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300">
+                    @else
+                      <div class="w-full h-full bg-gradient-to-br from-neutral-700 to-neutral-800 flex items-center justify-center">
+                        <svg class="w-12 h-12 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                      </div>
+                    @endif
+                  </div>
 
                   <!-- Product Info -->
                   <div class="flex-1 p-4 flex flex-col">
@@ -138,22 +136,28 @@
                     </div>
                   </div>
 
-                  <!-- Add to Cart Button -->
+                  <!-- Add to Cart + View Button -->
                   <div class="p-4 border-t border-neutral-700">
-                    @if($product->in_stock > 0)
-                      <button wire:click.prevent="addToCart({{ $product->id }})"
-                        class="w-full inline-flex items-center justify-center gap-x-2 px-4 py-2 text-sm font-semibold rounded-lg bg-brand-600 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4" viewBox="0 0 16 16">
-                          <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
-                        </svg>
-                        <span wire:loading.remove wire:target='addToCart({{ $product->id }})'>Add to Cart</span>
-                        <span wire:loading wire:target='addToCart({{ $product->id }})'>Adding...</span>
+                    <div class="flex gap-2" onclick="event.stopPropagation();">
+                      <button type="button" onclick="window.location.href='/products/{{ $product->slug }}';" class="inline-flex items-center justify-center gap-x-2 px-4 py-2 text-sm font-semibold rounded-lg bg-neutral-700 text-white hover:bg-neutral-600 transition">
+                        View Details
                       </button>
-                    @else
-                      <button disabled class="w-full inline-flex items-center justify-center gap-x-2 px-4 py-2 text-sm font-semibold rounded-lg bg-neutral-700 text-neutral-400 cursor-not-allowed">
-                        Out of Stock
-                      </button>
-                    @endif
+
+                      @if($product->in_stock > 0)
+                        <button type="button" wire:click.prevent="addToCart({{ $product->id }})"
+                          class="flex-1 inline-flex items-center justify-center gap-x-2 px-4 py-2 text-sm font-semibold rounded-lg bg-brand-600 text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-400 transition">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4" viewBox="0 0 16 16">
+                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+                          </svg>
+                          <span wire:loading.remove wire:target='addToCart({{ $product->id }})'>Add to Cart</span>
+                          <span wire:loading wire:target='addToCart({{ $product->id }})'>Adding...</span>
+                        </button>
+                      @else
+                        <button disabled class="flex-1 inline-flex items-center justify-center gap-x-2 px-4 py-2 text-sm font-semibold rounded-lg bg-neutral-700 text-neutral-400 cursor-not-allowed">
+                          Out of Stock
+                        </button>
+                      @endif
+                    </div>
                   </div>
                 </div>
               </div>

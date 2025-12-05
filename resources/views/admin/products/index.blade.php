@@ -57,7 +57,7 @@
                                             <span class="px-2 py-1 rounded bg-red-900 text-red-300 text-xs">Inactive</span> @endif
                                     </td>
                                     <td class="px-4 py-3 flex gap-2">
-                                        <a href="{{ route('admin.products.edit', $product) }}" class="text-brand-400">Edit</a>
+                                        <a href="{{ route('filament.admin.resources.products.edit', $product->id) }}" target="_blank" rel="noopener noreferrer" class="text-brand-400">View</a>
                                         <form method="POST" action="{{ route('admin.products.destroy', $product) }}"
                                             onsubmit="return confirm('Delete this product?');">
                                             @csrf

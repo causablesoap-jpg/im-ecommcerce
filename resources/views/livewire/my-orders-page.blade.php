@@ -9,67 +9,74 @@
               <tr>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order</th>
                 <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Date</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order Status</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Payment Status</th>
-                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order Amount</th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order Status
+                </th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Payment Status
+                </th>
+                <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase">Order Amount
+                </th>
                 <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase">Action</th>
               </tr>
             </thead>
             <tbody>
               @foreach($orders as $order)
-
-              @php
-                  $status = '';
-
-                  $payment_status ='';
-                  if($order->status == 'new'){
-                    $status ='<span class=" bg-blue-500 py-1 px-3 rounded text-white shadow">New</span>';
+                @php
+                  $status_html = '';
+                  switch ($order->status) {
+                    case 'new':
+                      $status_html = '<span class=" bg-brand-500 py-1 px-3 rounded text-white shadow">New</span>';
+                      break;
+                    case 'processing':
+                      $status_html = '<span class=" bg-yellow-500 py-1 px-3 rounded text-white shadow">Processing</span>';
+                      break;
+                    case 'shipped':
+                      $status_html = '<span class=" bg-green-500 py-1 px-3 rounded text-white shadow">Shipped</span>';
+                      break;
+                    case 'delivered':
+                      $status_html = '<span class=" bg-green-600 py-1 px-3 rounded text-white shadow">Delivered</span>';
+                      break;
+                    case 'canceled':
+                      $status_html = '<span class=" bg-red-500 py-1 px-3 rounded text-white shadow">Canceled</span>';
+                      break;
+                    default:
+                      $status_html = '<span class=" bg-neutral-600 py-1 px-3 rounded text-white shadow">' . ucfirst($order->status) . '</span>';
+                      break;
                   }
 
-                  
-                  if($order->status == 'processing'){
-                    $status ='<span class=" bg-yellow-500 py-1 px-3 rounded text-white shadow">Processing</span>';
+                  $payment_html = '';
+                  switch ($order->payment_status) {
+                    case 'pending':
+                      $payment_html = '<span class=" bg-brand-600 py-1 px-3 rounded text-white shadow">Pending</span>';
+                      break;
+                    case 'paid':
+                      $payment_html = '<span class=" bg-green-500 py-1 px-3 rounded text-white shadow">Paid</span>';
+                      break;
+                    case 'failed':
+                      $payment_html = '<span class=" bg-red-500 py-1 px-3 rounded text-white shadow">Failed</span>';
+                      break;
+                    default:
+                      $payment_html = '<span class=" bg-neutral-600 py-1 px-3 rounded text-white shadow">' . ucfirst($order->payment_status) . '</span>';
+                      break;
                   }
-                  
-                  if($order->status == 'shipped'){
-                    $status ='<span class=" bg-green-500 py-1 px-3 rounded text-white shadow">Shipped</span>';
-                  }
-                  if($order->status == 'delivered'){
-                    $status ='<span class=" bg-green-500 py-1 px-3 rounded text-white shadow">Delivered</span>';
-                  }
+                @endphp
 
-                  if($order->status == 'canceled'){
-                    $status ='<span class=" bg-red-500 py-1 px-3 rounded text-white shadow">Canceled</span>';
-                  }
-                    if($order->payment_status == 'pending'){
-                      $payment_status ='<span class=" bg-blue-600 py-1 px-3 rounded text-white shadow">Pending</span>';
-                  }
-
-                  if($order->payment_status == 'paid'){
-                      $payment_status ='<span class=" bg-green-500 py-1 px-3 rounded text-white shadow">Paid</span>';
-                  }
-                  if($order->payment_status == 'failed'){
-                      $payment_status ='<span class=" bg-red-500 py-1 px-3 rounded text-white shadow">Failed</span>';
-                  }
-                    
-                  
-              @endphp
-              <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-900 dark:even:bg-slate-800">
-                wire:key='{{ $order->id }}'
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">{{$order->id}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{$order->created_at->format('d-m-Y')}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"{{  }}}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                 {{  }}}
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{{Number::currency($order->grand_total,'INR')}}/td>
-                <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                  <a href="/my-orders/{{ $order->id }}" class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">View Details</a>
-                </td>
-              </tr>
-
-                  
-                @endforeach
+                <tr class="odd:bg-white even:bg-gray-100 dark:odd:bg-slate-900 dark:even:bg-slate-800">
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
+                    #{{ $order->id }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                    {{ $order->created_at->format('d-m-Y') }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{!! $status_html !!}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">{!! $payment_html !!}
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
+                    {{ \Illuminate\Support\Number::currency($order->grand_total, 'INR') }}</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
+                    <a href="{{ url('/my-orders/' . $order->id) }}"
+                      class="bg-slate-600 text-white py-2 px-4 rounded-md hover:bg-slate-500">View Details</a>
+                  </td>
+                </tr>
+              @endforeach
 
             </tbody>
           </table>
