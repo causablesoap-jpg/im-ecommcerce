@@ -8,7 +8,7 @@ use App\Helpers\CartManagement;
 use App\Livewire\Partials\Navbar;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert; // v4 correct
 
-#[Title('Product Detail- DCodeMania')]
+#[Title('Product Detail - TechGear Parts')]
 class ProductDetailPage extends Component
 {
     

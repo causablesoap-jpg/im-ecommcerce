@@ -85,7 +85,7 @@ Route::middleware('auth')->group(function () {
             return redirect()->route('admin.brands.show', $record);
         })->name('filament.admin.resources.brands.view');
 
-        // Filament products compatibility routes
+        // Filament products compatibility routes (index & create only)
         Route::get('/admin/filament/products-compat', function () {
             return redirect()->route('admin.products.index');
         })->name('filament.admin.resources.products.index');
@@ -93,10 +93,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/filament/products/create-compat', function () {
             return redirect()->route('admin.products.create');
         })->name('filament.admin.resources.products.create');
-
-        Route::get('/admin/filament/products/{record}-compat', function ($record) {
-            return redirect()->route('admin.products.show', $record);
-        })->name('filament.admin.resources.products.view');
 
         Route::get('/admin/inventory', [AdminController::class, 'inventory'])->name('admin.inventory');
         Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');

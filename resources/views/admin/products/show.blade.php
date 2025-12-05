@@ -118,11 +118,6 @@
 
                 <!-- ACTION BUTTONS -->
                 <div class="flex gap-4 pt-6 border-t border-neutral-700">
-                    <a href="{{ route('admin.products.edit', $product->id) }}"
-                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition font-semibold">
-                        ✏️ Edit Product
-                    </a>
-
                     <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="inline"
                         onsubmit="return confirm('Are you sure you want to delete this product?');">
                         @csrf

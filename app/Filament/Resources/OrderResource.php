@@ -129,6 +129,8 @@ class OrderResource extends Resource
     ->schema([
         Repeater::make('items')
             ->relationship()
+            ->deletable()
+            ->addable()
             ->schema([
                 Select::make('product_id')
                     ->relationship('product', 'name')
@@ -252,11 +254,12 @@ class OrderResource extends Resource
                 //
             ])
             ->actions([
-                ActionGroup::make([
-                    ViewAction::make(),
-                    EditAction::make(),
-                    DeleteAction::make(),
-                ])
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make()
+                    ->label('Remove')
+                    ->icon('heroicon-m-trash')
+                    ->color('danger'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

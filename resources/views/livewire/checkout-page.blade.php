@@ -22,7 +22,7 @@
 									id="first_name" type="text">
 								</input>
 								@error('first_name')
-									<div class="text-red-500 text-sm">{{ $message }}></div>
+									<div class="text-red-500 text-sm">{{ $message }}</div>
 								@enderror
 							</div>
 							<div>
@@ -34,7 +34,7 @@
 									id="last_name" type="text">
 								</input>
 								@error('last_name')
-									<div class="text-red-500 text-sm">{{ $message }}></div>
+									<div class="text-red-500 text-sm">{{ $message }}</div>
 								@enderror
 							</div>
 						</div>
@@ -47,7 +47,7 @@
 								id="phone" type="text">
 							</input>
 							@error('phone')
-								<div class="text-red-500 text-sm">{{ $message }}></div>
+								<div class="text-red-500 text-sm">{{ $message }}</div>
 							@enderror
 						</div>
 						<div class="mt-4">
@@ -59,7 +59,7 @@
 								id="address" type="text">
 							</input>
 							@error('street_address')
-								<div class="text-red-500 text-sm">{{ $message }}></div>
+								<div class="text-red-500 text-sm">{{ $message }}</div>
 							@enderror
 						</div>
 						<div class="mt-4">
@@ -71,7 +71,7 @@
 								id="city" type="text">
 							</input>
 							@error('city')
-								<div class="text-red-500 text-sm">{{ $message }}></div>
+								<div class="text-red-500 text-sm">{{ $message }}</div>
 							@enderror
 						</div>
 						<div class="grid grid-cols-2 gap-4 mt-4">
@@ -84,7 +84,7 @@
 									id="state" type="text">
 								</input>
 								@error('state')
-									<div class="text-red-500 text-sm">{{ $message }}></div>
+									<div class="text-red-500 text-sm">{{ $message }}</div>
 								@enderror
 							</div>
 							<div>
@@ -146,7 +146,7 @@
 						</li>
 					</ul>
 					@error('payment_method')
-						<div class="text-red-500 text-sm mt-2">{{ $message }}></div>
+						<div class="text-red-500 text-sm mt-2">{{ $message }}</div>
 					@enderror
 				</div>
 				<!-- End Card -->

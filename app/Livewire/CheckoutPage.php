@@ -86,7 +86,12 @@ class CheckoutPage extends Component
             $redirect_url = '';
 
             if($this->payment_method == 'stripe'){
-                Stripe::setApiKey(env('STRIPE_SECRET'));
+                $stripeKey = env('STRIPE_SECRET') ?: config('services.stripe.secret');
+                if (empty($stripeKey)) {
+                    $this->addError('payment_method', 'Stripe API key not configured. Set STRIPE_SECRET in your .env or configure services.stripe.secret.');
+                    return;
+                }
+                Stripe::setApiKey($stripeKey);
                 $sessionCheckout = Session::create([
                 'payment_method_types' => ['card'],
                 'customer_email'       => auth()->user()->email,
@@ -108,7 +113,6 @@ class CheckoutPage extends Component
             $address->save();
             $order->items()->createMany($cart_items);
             CartManagement::clearCartCookie();
-            Mail::to(request()->user())->send(new OrderPlaced($order));
             return redirect($redirect_url);
                 
             
